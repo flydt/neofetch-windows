@@ -1182,7 +1182,7 @@ get_distro() {
         ;;
 
         Windows)
-            distro=$(wmic os get Caption)
+            distro=$(wmic os get Caption  | iconv -f gbk -t utf-8)
             distro=${distro/Caption}
             distro=${distro/Microsoft }
         ;;
