@@ -1182,9 +1182,21 @@ get_distro() {
         ;;
 
         Windows)
-            distro=$(wmic os get Caption  | iconv -f gbk -t utf-8)
+            detailed_version=1
+            which iconv 1> /dev/null 2>&1
+            if [ $? -eq 0 ]
+            then
+                distro=$(wmic os get Caption | iconv -f gbk -t utf-8)
+            else
+                detailed_version=0
+                distro=$(wmic os get Caption)
+            fi
             distro=${distro/Caption}
             distro=${distro/Microsoft }
+            if [ $detailed_version -eq 0 ]
+            then
+               distro=`echo $distro | awk '{print $2,$3}'`
+            fi
         ;;
 
         Solaris)
